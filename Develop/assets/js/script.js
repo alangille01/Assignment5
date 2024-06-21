@@ -4,6 +4,7 @@ let nextId = JSON.parse(localStorage.getItem("nextId")) || 1;
 
 // Todo: create a function to generate a unique task id
 function generateTaskId() {
+    // Task ID starts at 1
     return nextId++;
 }
 
@@ -32,15 +33,19 @@ function renderTaskList() {
 
     taskList.forEach(task => {
         const taskCard = createTaskCard(task);
+        // Append the task card to the appropriate status column
         $(`#${task.status}-cards`).append(taskCard);
         console.log($(`#${task.status}-cards`))
         taskCard.draggable({
+            // Revert to original position if dropped outside a droppable area
             revert: "invalid",
             start: function () {
+                // Bring the card to the front while dragging
                 $(this).css("z-index", 1000);
             },
             stop: function () {
-                $(this).css("z-index", 1);
+                // Reset the z-index after dragging
+                $(this).css("z-index", 1); 
             }
         });
     });
@@ -64,7 +69,7 @@ function handleAddTask(event){
         title,
         dueDate,
         description,
-        status: 'todo'
+        status: 'todo' // New tasks start in the "todo" status
     };
 
     console.log("Adding new task:", newTask);
@@ -72,6 +77,7 @@ function handleAddTask(event){
     saveTasks();
     renderTaskList();
     $('#formModal').modal('hide');
+    // Reset the form fields
     $('#taskForm')[0].reset();
 }
 
@@ -79,6 +85,7 @@ function handleAddTask(event){
 function handleDeleteTask(event) {
     const taskId = $(event.target).closest('.task-card').data('id');
     console.log("Deleting task with id:", taskId);
+    // Remove the task from the task list
     taskList = taskList.filter(task => task.id !== taskId);
     saveTasks();
     renderTaskList();
@@ -88,10 +95,12 @@ function handleDeleteTask(event) {
 function handleDrop(event, ui) {
     const taskId = ui.helper.data('id');
     console.log($(this).attr('id'))
+    // Get the id of the status lane the task was dropped into
     const newStatus = $(this).attr('id');
     console.log("Dropping task with id:", taskId, "to new status:", newStatus);
     const task = taskList.find(task => task.id === taskId);
     task.status = newStatus;
+    // Save the updated task list to localStorage
     saveTasks();
     renderTaskList();
 }
@@ -125,14 +134,19 @@ function getCardBackgroundColour(taskDueDate) {
 // Todo: when the page loads, render the task list, add event listeners, make lanes droppable, and make the due date field a date picker
 $(document).ready(function () {
     console.log("Document ready, initializing..."); 
+    // Render the initial task list from local storage
     renderTaskList();
+    // date picker provides a nice UI to pick a date
     $('#taskDueDate').datepicker();
 
+    // Add event listener for the task form submission
     $('#taskForm').on('submit', handleAddTask);
+    // Add event listener for deleting tasks
     $(document).on('click', '.delete-task', handleDeleteTask);
 
+    // Make each status lane droppable and define the drop handler
     $('.lane').droppable({
-        accept: ".task-card",
+        accept: ".task-card", // only accept task-card types
         drop: handleDrop
     });
 });
