@@ -20,7 +20,18 @@ function renderTaskList() {
     });
 
     taskList.forEach(task => {
-        console.log(task)
+        const taskCard = createTaskCard(task);
+        $(`#${task.status}-cards`).append(taskCard);
+        console.log($(`#${task.status}-cards`))
+        taskCard.draggable({
+            revert: "invalid",
+            start: function () {
+                $(this).css("z-index", 1000);
+            },
+            stop: function () {
+                $(this).css("z-index", 1);
+            }
+        });
     });
 }
 
