@@ -10,8 +10,9 @@ function generateTaskId() {
 // Todo: create a function to create a task card
 function createTaskCard(task) {
     console.log("Creating task card:", task);
+    const borderColour = getCardBackgroundColour(task.dueDate);
     return $(`
-    <div class="card task-card mb-3" data-id="${task.id}"">
+    <div class="card task-card mb-3" data-id="${task.id}" style="border: 5px solid ${borderColour};">
       <div class="card-body">
         <h5 class="card-title">${task.title}</h5>
         <p class="card-text">${task.description}</p>
@@ -75,7 +76,7 @@ function handleAddTask(event){
 }
 
 // Todo: create a function to handle deleting a task
-function handleDeleteTask(event){
+function handleDeleteTask(event) {
     const taskId = $(event.target).closest('.task-card').data('id');
     console.log("Deleting task with id:", taskId);
     taskList = taskList.filter(task => task.id !== taskId);
@@ -93,6 +94,32 @@ function handleDrop(event, ui) {
     task.status = newStatus;
     saveTasks();
     renderTaskList();
+}
+
+function getCardBackgroundColour(taskDueDate) {
+    // Determine the current date
+    let currentDate = new Date();
+    // Parse the task's due date
+    let dueDate = new Date(taskDueDate);
+    
+    // Calculate the difference in days
+    let timeDiff = dueDate.getTime() - currentDate.getTime();
+    let diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
+    
+    // Determine the background color based on the due date
+    let bgColor = '';
+    if (diffDays < 0) {
+        // Task is overdue
+        bgColor = 'red';
+    } else if (diffDays < 3) {
+        // Task is due soon (within 3 days)
+        bgColor = 'yellow';
+    } else {
+        // Default background color for tasks not overdue or due soon
+        bgColor = 'green';
+    }
+
+    return bgColor;
 }
 
 // Todo: when the page loads, render the task list, add event listeners, make lanes droppable, and make the due date field a date picker
