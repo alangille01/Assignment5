@@ -69,6 +69,7 @@ function handleAddTask(event){
     console.log("Adding new task:", newTask);
     taskList.push(newTask);
     saveTasks();
+    renderTaskList();
     $('#formModal').modal('hide');
     $('#taskForm')[0].reset();
 }
