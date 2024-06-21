@@ -14,6 +14,18 @@ function createTaskCard(task) {
 
 // Todo: create a function to render the task list and make cards draggable
 function renderTaskList() {
+
+}
+
+// Save tasks and nextId to localStorage
+function saveTasks() {
+    localStorage.setItem('tasks', JSON.stringify(taskList));
+    localStorage.setItem('nextId', JSON.stringify(nextId));
+}
+
+// Todo: create a function to handle adding a new task
+function handleAddTask(event){
+    event.preventDefault();
     const title = $('#taskTitle').val();
     const dueDate = $('#taskDueDate').val();
     const description = $('#taskDescription').val();
@@ -29,17 +41,8 @@ function renderTaskList() {
     console.log("Adding new task:", newTask);
     taskList.push(newTask);
     saveTasks();
-}
-
-// Save tasks and nextId to localStorage
-function saveTasks() {
-    localStorage.setItem('tasks', JSON.stringify(taskList));
-    localStorage.setItem('nextId', JSON.stringify(nextId));
-}
-
-// Todo: create a function to handle adding a new task
-function handleAddTask(event){
-
+    $('#formModal').modal('hide');
+    $('#taskForm')[0].reset();
 }
 
 // Todo: create a function to handle deleting a task
