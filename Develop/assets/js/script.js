@@ -14,7 +14,14 @@ function createTaskCard(task) {
 
 // Todo: create a function to render the task list and make cards draggable
 function renderTaskList() {
+    console.log("Rendering task list:", taskList); 
+    ['todo', 'in-progress', 'done'].forEach(status => {
+        $(`#${status}-cards`).empty();
+    });
 
+    taskList.forEach(task => {
+        console.log(task)
+    });
 }
 
 // Save tasks and nextId to localStorage
