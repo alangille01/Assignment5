@@ -107,19 +107,19 @@ function getCardBackgroundColour(taskDueDate) {
     let diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
     
     // Determine the background color based on the due date
-    let bgColor = '';
+    let borderColour = '';
     if (diffDays < 0) {
         // Task is overdue
-        bgColor = 'red';
+        borderColour = 'red';
     } else if (diffDays < 3) {
         // Task is due soon (within 3 days)
-        bgColor = 'yellow';
+        borderColour = 'yellow';
     } else {
         // Default background color for tasks not overdue or due soon
-        bgColor = 'green';
+        borderColour = 'green';
     }
 
-    return bgColor;
+    return borderColour;
 }
 
 // Todo: when the page loads, render the task list, add event listeners, make lanes droppable, and make the due date field a date picker
