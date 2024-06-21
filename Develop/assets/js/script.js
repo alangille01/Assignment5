@@ -28,6 +28,13 @@ function renderTaskList() {
 
     console.log("Adding new task:", newTask);
     taskList.push(newTask);
+    saveTasks();
+}
+
+// Save tasks and nextId to localStorage
+function saveTasks() {
+    localStorage.setItem('tasks', JSON.stringify(taskList));
+    localStorage.setItem('nextId', JSON.stringify(nextId));
 }
 
 // Todo: create a function to handle adding a new task
